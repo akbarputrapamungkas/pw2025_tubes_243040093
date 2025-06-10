@@ -8,7 +8,7 @@
     <title>Website Otomotif</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        
+
     </style>
 </head>
 
@@ -50,45 +50,31 @@
             </div>
         </div>
     </nav>
+    <?php
+    include 'inc/config.php';
 
-    <div class="container mt-5 py-3">
-        <h2 class="mb-4">Cari Kendaraan</h2>
 
-        <!-- FORM SEARCH -->
-        <form method="GET" class="mb-4">
-            <div class="input-group">
-                <input type="text" name="search" class="form-control" placeholder="Masukkan nama kendaraan..." value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '' ?>">
-                <button class="btn btn-primary" type="submit">Cari</button>
-            </div>
-        </form>
+    $id = $_GET['id'];
+    $query = $conn->query("SELECT * FROM kendaraan WHERE id = $id");
+    $data = $query->fetch_assoc();
+    ?>
 
-        <div class="row">
-            <?php
-            // Ambil kata kunci dari GET
-            $keyword = isset($_GET['search']) ? $_GET['search'] : '';
+    <div class="container mt-5">
+        <a href="index.php" class="btn btn-secondary mb-3">← Kembali</a>
 
-            // Query SQL dengan LIKE
-            $sql = "SELECT * FROM kendaraan WHERE judul LIKE '%$keyword%' ORDER BY id DESC";
-            $result = $conn->query($sql);
-
-            if ($result->num_rows > 0):
-                while ($row = $result->fetch_assoc()):
-            ?>
-                    <div class="col-md-4 mb-4">
-                        <div class="card h-100 shadow-sm">
-                            <img src="uploads/<?= $row['gambar'] ?>" class="card-img-top" style="height: 200px; object-fit: cover;">
-                            <div class="card-body">
-                                <h5 class="card-title"><?= $row['judul'] ?><h5>
-                                        <p class="card-text text-muted">Rp<?= number_format($row['harga'], 0, ',', '.')  ?></p>
-                                        <p class="card-text"><?= substr($row['deskripsi'], 0, 80) ?>...</p>
-                                        <a href="detail.php?id=<?= $row['id'] ?>" class="btn btn-sm btn-warning">Lihat Detail</a>
-                            </div>
-                        </div>
+        <div class="card">
+            <div class="row g-0">
+                <div class="col-md-6">
+                    <img src="uploads/<?= $data['gambar'] ?>" class="img-fluid rounded-start" style="height: 100%; object-fit: cover;">
+                </div>
+                <div class="col-md-6">
+                    <div class="card-body">
+                        <h3 class="card-title"><?= htmlspecialchars($data['judul']) ?></h3>
+                        <h4 class="text-danger">Rp<?= number_format($data['harga'], 0, ',', '.') ?></h4>
+                        <p class="card-text mt-3"><?= nl2br(htmlspecialchars($data['deskripsi'])) ?></p>
                     </div>
-                <?php endwhile;
-            else: ?>
-                <p class="text-muted">Tidak ada kendaraan ditemukan.</p>
-            <?php endif; ?>
+                </div>
+            </div>
         </div>
     </div>
 
