@@ -7,8 +7,7 @@ exit;
 
 
 
-session_start();
-if (!isset($_SESSION['login'])) {
+
     header("Location: ../admin_login.php");
     exit;
-}
+

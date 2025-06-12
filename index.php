@@ -1,4 +1,13 @@
-<?php include 'inc/config.php'; ?>
+<?php include 
+'inc/config.php'; 
+session_start();
+// cek apakah user sudah login
+   if( !isset($_SESSION['login']) ) {
+       header("Location: admin_login.php");
+       exit;
+   }
+
+?> 
 <!DOCTYPE html>
 <html lang="id">
 
@@ -43,7 +52,7 @@
                         <ul class="dropdown-menu" aria-labelledby="adminDropdown">
                             <li><a class="dropdown-item" href="admin_login.php">Login Admin</a></li>
                             <li><a class="dropdown-item" href="admin/dashboard.php">Dashboard</a></li>
-                            <li><a class="dropdown-item" href="admin/logout.php">Logout</a></li>
+                            <li><a class="dropdown-item" href="admin_logout.php">Logout</a></li>
                         </ul>
                     </li>
                 </ul>

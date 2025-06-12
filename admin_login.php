@@ -1,35 +1,37 @@
 <?php
 session_start();
+
+if (isset($_SESSION['login'])) {
+    header("Location: index.php");
+    exit;
+}
+
+
 require 'inc/config.php';
 
-$error = false;
-
 if (isset($_POST['login'])) {
-    $username = trim($_POST['username']);
-    $password = trim($_POST['password']);
+    $username = $_POST['username'];
+    $password = $_POST['password'];
 
-    // Query username
-    $result = mysqli_query($conn, "SELECT * FROM admin WHERE username = '$username'");
+    $result = mysqli_query($conn, "SELECT * FROM user WHERE username = '$username'");
 
-    if ($result && mysqli_num_rows($result) === 1) {
+    if (mysqli_num_rows($result) === 1) {
+        // cek password
         $row = mysqli_fetch_assoc($result);
-
-        // Verifikasi password
         if (password_verify($password, $row['password'])) {
+            // set session
             $_SESSION['login'] = true;
-            $_SESSION['username'] = $row['username'];
-            header("Location: admin/dashboard.php");
+            header("location: index.php");
             exit;
         }
+        
     }
-
-    // Jika gagal login
+    
     $error = true;
 }
 ?>
-
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -41,30 +43,23 @@ if (isset($_POST['login'])) {
     <div class="container mt-5">
         <div class="row justify-content-center">
             <div class="col-md-4">
-                <div class="card shadow">
-                    <div class="card-header bg-primary text-white text-center">
-                        <h5 class="mb-0">Login Admin</h5>
-                    </div>
+                <div class="card">
+                    <div class="card-header bg-primary text-white">Login Admin</div>
                     <div class="card-body">
-                        <?php if ($error): ?>
+                        <?php if (isset($error)): ?>
                             <div class="alert alert-danger">Username atau Password salah!</div>
                         <?php endif; ?>
-                        <form method="POST" action="">
+                        <form action="" method="post">
                             <div class="mb-3">
                                 <label for="username" class="form-label">Username</label>
-                                <input type="text" name="username" id="username" class="form-control" required autofocus>
+                                <input type="text" name="username" class="form-control" required>
                             </div>
                             <div class="mb-3">
                                 <label for="password" class="form-label">Password</label>
-                                <input type="password" name="password" id="password" class="form-control" required>
+                                <input type="password" name="password" class="form-control" required>
                             </div>
-                            <div class="d-grid">
-                                <button type="submit" name="login" class="btn btn-primary">Login</button>
-                            </div>
+                            <button type="submit" name="login" class="btn btn-primary">Login</button>
                         </form>
-                    </div>
-                    <div class="card-footer text-center small">
-                        &copy; <?= date('Y') ?> - Admin Panel
                     </div>
                 </div>
             </div>
