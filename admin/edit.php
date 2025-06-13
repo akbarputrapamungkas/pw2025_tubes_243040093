@@ -35,34 +35,65 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 ?>
 
-<div class="container mt-5">
-    <h2>Edit Kendaraan</h2>
+<!-- STYLE TAMBAHAN -->
+<style>
+    .edit-card {
+        border-radius: 12px;
+        box-shadow: 0 0 25px rgba(0, 0, 0, 0.05);
+        padding: 30px;
+        background-color: #ffffff;
+    }
 
-    <form method="POST" enctype="multipart/form-data">
-        <div class="mb-3">
-            <label class="form-label">Judul</label>
-            <input type="text" name="judul" class="form-control" value="<?= $data['judul'] ?>" required>
+    .form-title {
+        border-left: 5px solid #0d6efd;
+        padding-left: 12px;
+        font-weight: 600;
+        font-size: 24px;
+        margin-bottom: 30px;
+    }
+</style>
+
+<div class="container mt-5 mb-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="edit-card">
+                <div class="form-title">Edit Data Kendaraan</div>
+
+                <form method="POST" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label class="form-label">Judul Kendaraan</label>
+                        <input type="text" name="judul" class="form-control" value="<?= htmlspecialchars($data['judul']) ?>" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Harga</label>
+                        <input type="number" name="harga" class="form-control" value="<?= $data['harga'] ?>" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Deskripsi</label>
+                        <textarea name="deskripsi" class="form-control" rows="5" required><?= htmlspecialchars($data['deskripsi']) ?></textarea>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Gambar Saat Ini</label><br>
+                            <img src="../uploads/<?= $data['gambar'] ?>" class="img-fluid rounded shadow-sm" style="max-height: 200px;">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Ganti Gambar (Opsional)</label>
+                            <input type="file" name="gambar" class="form-control" accept=".jpg, .jpeg, .png">
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <a href="dashboard.php" class="btn btn-secondary">Kembali</a>
+                        <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                    </div>
+                </form>
+            </div>
         </div>
-
-        <div class="mb-3">
-            <label class="form-label">Harga</label>
-            <input type="number" name="harga" class="form-control" value="<?= $data['harga'] ?>" required>
-        </div>
-
-        <div class="mb-3">
-            <label class="form-label">Deskripsi</label>
-            <textarea name="deskripsi" class="form-control" rows="4" required><?= $data['deskripsi'] ?></textarea>
-        </div>
-
-        <div class="mb-3">
-            <label class="form-label">Ganti Gambar (opsional)</label><br>
-            <img src="../uploads/<?= $data['gambar'] ?>" width="150" class="img-thumbnail mb-2"><br>
-            <input type="file" name="gambar" class="form-control" accept=".jpg, .jpeg, .png">
-        </div>
-
-        <button type="submit" class="btn btn-primary">Update</button>
-        <a href="dashboard.php" class="btn btn-secondary">Kembali</a>
-    </form>
+    </div>
 </div>
 
 <?php include '../inc/footer.php'; ?>

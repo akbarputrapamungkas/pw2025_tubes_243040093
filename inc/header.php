@@ -27,7 +27,7 @@
                         <a class="nav-link active" aria-current="page" href="index.php">Beranda</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="kirim.php">Kirim Kendaraan</a>
+                        <a class="nav-link" href="../kirim.php">Kirim Kendaraan</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="detail.php">Detail</a>
@@ -41,8 +41,8 @@
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="adminDropdown">
                             <li><a class="dropdown-item" href="admin_login.php">Login Admin</a></li>
-                            <li><a class="dropdown-item" href="admin/dashboard.php">Dashboard</a></li>
-                            <li><a class="dropdown-item" href="admin/logout.php">Logout</a></li>
+                            
+                            <li><a class="dropdown-item" href="admin_logout.php">Logout</a></li>
                         </ul>
                     </li>
                 </ul>

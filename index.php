@@ -1,19 +1,13 @@
-<?php include 
-'inc/config.php'; 
+<?php
+include 'inc/config.php';
 session_start();
-// cek apakah user sudah login
-   if( !isset($_SESSION['login']) ) {
-       header("Location: admin_login.php");
-       exit;
-   }
 
-    // cek apakah user adalah admin
-    if ($_SESSION['username'] !== 'admin') {
-         header("Location: admin/dashboard.php");
-         exit;
-    }
-
-?> 
+// Cek apakah user sudah login
+if (!isset($_SESSION['login'])) {
+    header("Location: admin_login.php");
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="id">
 
@@ -22,13 +16,10 @@ session_start();
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Website Otomotif</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        
-    </style>
 </head>
 
 <body>
-    <!-- inc/header.php -->
+    <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-lg fixed-top">
         <div class="container-fluid">
             <a class="navbar-brand" href="index.php">OtoDeal</a>
@@ -39,50 +30,31 @@ session_start();
 
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto text-center px-2">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="index.php">Beranda</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="kirim.php">Kirim Kendaraan</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="detail.php">Detail</a>
-                    </li>
-
-                    <!-- Dropdown untuk admin -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            Admin
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="adminDropdown">
-                            <li><a class="dropdown-item" href="admin_login.php">Login</a></li>
-                            <li><a class="dropdown-item" href="admin/dashboard.php">Dashboard</a></li>
-                            <li><a class="dropdown-item" href="admin_logout.php">Logout</a></li>
-                        </ul>
-                    </li>
+                    <li class="nav-item"><a class="nav-link active" href="index.php">Beranda</a></li>
+                    <li class="nav-item"><a class="nav-link" href="kirim.php">Kirim Kendaraan</a></li>
+                    
+                    <li class="nav-item"><a class="nav-link" href="admin_logout.php">Logout</a></li>
                 </ul>
             </div>
         </div>
     </nav>
 
-    <div class="container mt-5 py-3">
+    <!-- Konten Utama -->
+    <div class="container mt-5 pt-5">
         <h2 class="mb-4">Cari Kendaraan</h2>
 
-        <!-- FORM SEARCH -->
+        <!-- Form Pencarian -->
         <form method="GET" class="mb-4">
             <div class="input-group">
-                <input type="text" name="search" class="form-control" placeholder="Masukkan nama kendaraan..." value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '' ?>">
+                <input type="text" name="search" class="form-control" placeholder="Masukkan nama kendaraan..."
+                    value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '' ?>">
                 <button class="btn btn-primary" type="submit">Cari</button>
             </div>
         </form>
 
         <div class="row">
             <?php
-            // Ambil kata kunci dari GET
-            $keyword = isset($_GET['search']) ? $_GET['search'] : '';
-
-            // Query SQL dengan LIKE
+            $keyword = isset($_GET['search']) ? $conn->real_escape_string($_GET['search']) : '';
             $sql = "SELECT * FROM kendaraan WHERE judul LIKE '%$keyword%' ORDER BY id DESC";
             $result = $conn->query($sql);
 
@@ -91,12 +63,13 @@ session_start();
             ?>
                     <div class="col-md-4 mb-4">
                         <div class="card h-100 shadow-sm">
-                            <img src="uploads/<?= $row['gambar'] ?>" class="card-img-top" style="height: 200px; object-fit: cover;">
+                            <img src="uploads/<?= htmlspecialchars($row['gambar']) ?>" class="card-img-top" alt="Gambar Kendaraan"
+                                style="height: 200px; object-fit: cover;">
                             <div class="card-body">
-                                <h5 class="card-title"><?= $row['judul'] ?><h5>
-                                        <p class="card-text text-muted">Rp<?= number_format($row['harga'], 0, ',', '.')  ?></p>
-                                        <p class="card-text"><?= substr($row['deskripsi'], 0, 80) ?>...</p>
-                                        <a href="detail.php?id=<?= $row['id'] ?>" class="btn btn-sm btn-warning">Lihat Detail</a>
+                                <h5 class="card-title"><?= htmlspecialchars($row['judul']) ?></h5>
+                                <p class="card-text text-muted">Rp<?= number_format($row['harga'], 0, ',', '.') ?></p>
+                                <p class="card-text"><?= htmlspecialchars(substr($row['deskripsi'], 0, 80)) ?>...</p>
+                                <a href="detail.php?id=<?= $row['id'] ?>" class="btn btn-sm btn-warning">Lihat Detail</a>
                             </div>
                         </div>
                     </div>
@@ -108,3 +81,7 @@ session_start();
     </div>
 
     <?php include 'inc/footer.php'; ?>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
