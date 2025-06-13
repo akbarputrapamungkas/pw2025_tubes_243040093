@@ -5,7 +5,15 @@ if (!isset($_SESSION['login'])) {
     exit;
 }
 
+// Cek apakah user adalah admin
+// if ($_SESSION['username'] !== 'admin') {
+//     header("Location: ../index.php");
+//     exit;
+// }
+
 require '../inc/config.php';
+
+
 
 // Ambil data dari database
 $result = mysqli_query($conn, "SELECT * FROM kendaraan");
@@ -24,7 +32,7 @@ $result = mysqli_query($conn, "SELECT * FROM kendaraan");
     <div class="container mt-5">
         <h1>Data Kendaraan</h1>
         <a href="tambah.php" class="btn btn-success mb-3">+ Tambah Kendaraan</a>
-        <a href="../logout.php" class="btn btn-danger mb-3 float-end">Logout</a>
+        <a href="../admin_logout.php" class="btn btn-danger mb-3 float-end">Logout</a>
 
         <table class="table table-bordered table-striped">
             <thead>

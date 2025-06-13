@@ -41,7 +41,7 @@
                             Admin
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="adminDropdown">
-                            <li><a class="dropdown-item" href="admin_login.php">Login Admin</a></li>
+                            <li><a class="dropdown-item" href="admin_login.php">Login</a></li>
                             <li><a class="dropdown-item" href="admin/dashboard.php">Dashboard</a></li>
                             <li><a class="dropdown-item" href="admin/logout.php">Logout</a></li>
                         </ul>
